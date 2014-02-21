@@ -33,3 +33,4 @@ efficiency.lm<-lm(outcome ~ Time + Strikes + efficiency, data)
 anova(efficiency.lm)
 plot(efficiency.lm)
 
+#do anova with efficiency - see if it correlates with novices and experts for each idividual KS
