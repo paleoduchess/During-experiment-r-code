@@ -18,16 +18,18 @@ Time=as.numeric(as.character(Time))
 Strikes<-data$Strikes
 Strikes=as.numeric(as.character(Strikes))
 Participant<-data$Participant.number
+Group<-data$Participant.group
+outcome<-data$Split.No.split
+outcome=as.numeric(outcome)
+data$efficiency <- Time/Strikes #creating efficiency index and attaching to data frame
+efficiency<-data$efficiency
 
-new.data<-data.frame(Participant,Time,Strikes)
 
-new.data<- transform(new.data, Efficiency = Time / Strikes)
+cor.test(Time,Strikes)
+ggplot(Time, Strikes)
 
+efficiency.lm<-lm(outcome ~ Time + Strikes + efficiency, data)
 
+anova(efficiency.lm)
+plot(efficiency.lm)
 
-new.data<-data.frame
-
-e.index<- function(x,y){
-  
-  
-}
