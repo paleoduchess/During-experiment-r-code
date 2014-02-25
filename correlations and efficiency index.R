@@ -14,7 +14,7 @@
 data<-During.experiment.recording_fixed02.11.2014
 
 data<-data[-(189:190),]
-data<-data[-(138:139),]
+
 
 Time<-data$Time.s.
 Time=as.numeric(as.character(Time))
@@ -25,6 +25,8 @@ Group<-data$Participant.group
 outcome<-data$Split.No.split
 outcome=as.numeric(outcome)
 data$efficiency <- ((Time/Strikes)*(data$Prob.success.)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
+data$efficiency <- ((Time/Strikes)*(100)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
+
 efficiency<-data$efficiency
 
 plot(efficiency)
@@ -32,19 +34,6 @@ plot(efficiency)
 subset(data, efficiency == max(efficiency)) #extract row from data.frame
 
  #creating efficiency index and attaching to data frame
-
-data.splits<-subset(data, outcome==2)
-
-
-plot(data.splits$efficiency)
-
-kruskalmc(data.splits$efficiency~data.splits$Participant.group) 
-
-ggplot(data.splits, aes(Participant.number, as.numeric(as.character(efficiency)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Efficiency")
-
-ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Time.s.)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
-
-ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Strikes)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
 
 kruskalmc(efficiency~Participant) 
 
@@ -62,6 +51,18 @@ kruskalmc(efficiency~Participant)
 
 kruskalmc(efficiency~Participant + Group) 
 
-ggplot(data, aes(Group, efficiency)) + geom_boxplot()
-ggplot(data, aes(Participant, efficiency)) + geom_boxplot()
-#do anova with efficiency - see if it correlates with novices and experts for each idividual KS
+#do same stuff but only for successes
+data.splits<-subset(data, outcome==2)
+
+
+plot(data.splits$efficiency)
+
+kruskalmc(data.splits$efficiency~data.splits$Participant.group) 
+
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(efficiency)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Efficiency")
+
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Time.s.)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
+
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Strikes)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
+
+
