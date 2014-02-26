@@ -1,41 +1,26 @@
-#Correlation betwee strikes and time
 
+data<-during.experiment
 
-#for all participants
-#for experts
-#for novices
-
-#Efficiency index
-
-#time/strikes for each splitting event as an index of efficiency
-#data frame with participant group, participant number, time, strikes, and efficiency
-#need to make a function that will divide the time by the strike value for each splitting event (by row)
-
-data<-During.experiment.recording_fixed02.11.2014
-
-data<-data[-(189:190),]
-
-
-Time<-data$Time.s.
-Time=as.numeric(as.character(Time))
-Strikes<-data$Strikes
-Strikes=as.numeric(as.character(Strikes))
-Participant<-data$Participant.number
-Group<-data$Participant.group
+time<-data$Time.s.
+time=as.numeric(as.character(time))
+strikes<-data$Strikes
+strikes=as.numeric(as.character(strikes))
+participant<-data$Participant.number
+group<-data$Participant.group
 outcome<-data$Split.No.split
 outcome=as.numeric(outcome)
-data$efficiency <- ((Time/Strikes)*(data$Prob.success.)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
-data$efficiency <- ((Time/Strikes)*(100)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
+data$efficiency <- ((time/strikes)*(data$Prob.success.)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
 
-efficiency<-data$efficiency
+efficiency<-data$efficiency #naming efficiency column
 
-plot(efficiency)
+plot(efficiency, xlab="Cobble", ylab="Efficiency", main="Efficiency Plot") #visualize the efficiency data generally
 
-subset(data, efficiency == max(efficiency)) #extract row from data.frame
+subset(data, efficiency == max(efficiency)) #extract row from data.frame ##don't need this now, but could be useful for future datasets
 
- #creating efficiency index and attaching to data frame
 
-kruskalmc(efficiency~Participant) 
+##ANOVA for efficiency
+kruskalmc(efficiency~group) #ANOVA by group
+kruskalmc(efficiency~participant) #ANOVA by participant
 
 
 
@@ -44,18 +29,11 @@ ggplot(data, aes(Participant, efficiency)) + geom_boxplot() + geom_jitter(aes(co
 ggplot(data, aes(Group, efficiency)) + geom_boxplot() + geom_jitter(aes(colour = Group)) + ylab ("Efficiency")
 
 
-
-kruskalmc(efficiency~Group) 
-
-kruskalmc(efficiency~Participant) 
-
-kruskalmc(efficiency~Participant + Group) 
-
 #do same stuff but only for successes
+
 data.splits<-subset(data, outcome==2)
 
-
-plot(data.splits$efficiency)
+plot(data.splits$efficiency, ylab="Efficiency", xlab="Cobble", main="Efficiency data for Successful Splits") #general plot for only successes
 
 kruskalmc(data.splits$efficiency~data.splits$Participant.group) 
 

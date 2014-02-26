@@ -13,6 +13,7 @@ strikes<-data$Strikes
 plot(time, xlab= "Cobble", ylab = "Time", main="Time Data Plot")
 plot(strikes, xlab= "Cobble", ylab = "Strikes", main="Strike Data Plot")
 
+
 #boxplot for time data across participants
 p.t<-ggplot(data, aes(participant, time)) #graph where each individual has their own color
 p.t + geom_boxplot()
@@ -59,4 +60,28 @@ p2 + ggtitle("Expert vs Novice Time") + xlab("Time (s)") + ylab("Density") + sca
 #Strikes
 strike.density<-ggplot(data, aes(strikes, fill = Participant.group)) + geom_density(alpha = 0.2) #overlayed histograms
 strike.density + ggtitle("Expert vs Novice Strikes") + xlab("Strikes") + ylab("Density") + scale_x_continuous("Strikes", lim=c(0,1000), breaks=0:1000*50)
+
+#Efficiency plots
+outcome<-data$Split.No.split
+outcome=as.numeric(outcome)
+data$efficiency <- ((time/strikes)*(data$Prob.success.))
+efficiency<-data$efficiency #naming efficiency column
+data.splits<-subset(data, outcome==2)
+
+#ggplots for efficiency (success or no success)
+
+ggplot(data, aes(participant, efficiency)) + geom_boxplot() + geom_jitter(aes(colour = participant)) + ylab ("Efficiency")
+
+ggplot(data, aes(group, efficiency)) + geom_boxplot() + geom_jitter(aes(colour = group)) + ylab ("Efficiency")
+
+#ggplots for efficiency (success only)
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(efficiency)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Efficiency (Success Only)")
+
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Time.s.)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
+
+ggplot(data.splits, aes(Participant.number, as.numeric(as.character(Strikes)))) + geom_boxplot() + geom_jitter(aes(colour = Participant.number)) + ylab ("Time")
+
+#efficiency histograms
+efficiency.density<-ggplot(data, aes(efficiency, fill = group)) + geom_density(alpha = 0.2) #overlayed histograms
+efficiency.density + ggtitle("Expert vs Novice Efficiency") + xlab("Efficiency") + ylab("Density") + scale_x_continuous("Efficiency", lim=c(0,10), breaks=0:10*0.5)
 
