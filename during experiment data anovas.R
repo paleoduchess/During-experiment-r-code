@@ -10,6 +10,10 @@ novice<-subset(data, Participant.group == "Novice") #subset data for novices onl
 novice.time<-as.numeric(as.character(novice$Time.s.)) #numeric time data for novices only
 expert.strikes<-as.numeric(as.character(expert$Strikes)) #numeric strikes data for experts only
 novice.strikes<-as.numeric(as.character(novice$Strikes)) #numeric strikes data for novices only
+outcome<-data$Split.No.split
+outcome=as.numeric(outcome)
+data$efficiency <- ((time/strikes)*(data$Prob.success.)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
+efficiency<-data$efficiency #naming efficiency column
 
 #ANOVAS for time with whole dataset
 
@@ -48,4 +52,9 @@ anova(s.glm.within, test = "Chisq")
 ##ANOVAs for efficiency
 kruskalmc(efficiency~group) #ANOVA by group
 kruskalmc(efficiency~participant) #ANOVA by participant
+
+#do same stuff for efficiency, but only for successes
+data.splits<-subset(data, outcome==2)
+kruskalmc(data.splits$efficiency~data.splits$Participant.group)
+kruskalmc(data.splits$efficiency~data.splits$Participant.number)
 
