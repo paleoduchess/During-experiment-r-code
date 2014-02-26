@@ -1,29 +1,32 @@
 #ANOVA for time
 #not a normal distribution
 
-data<-During.experiment.recording_fixed02.11.2014
-data<-data[-(189:190),]
-time<-as.numeric(as.character(data$Time.s.))
-expert.time<-subset(data, Participant.group =="Expert") #subset time data for experts only
-expert.time$Time.s.=as.numeric(as.character(expert.time$Time.s.)) #make time data numeric
+data<-during.experiment #whole data frame
+time<-as.numeric(as.character(data$Time.s.)) #time for whole dataset
+strikes<-as.numeric(as.character(data$Strikes)) #strikes for whole dataset
+expert<-subset(data, Participant.group =="Expert") #subset data for experts only
+expert.time<-as.numeric(as.character(expert$Time.s.)) #numeric time data for experts only
+novice<-subset(data, Participant.group == "Novice") #subset data for novices only
+novice.time<-as.numeric(as.character(novice$Time.s.)) #numeric time data for novices only
+expert.strikes<-as.numeric(as.character(expert$Strikes)) #numeric strikes data for experts only
+novice.strikes<-as.numeric(as.character(novice$Strikes)) #numeric strikes data for novices only
 
-novice.time<-subset(data, Participant.group == "Novice") #subset time data for novices only
-novice.time$Time.s.=as.numeric(as.character(novice.time$Time.s.)) #make time data numeric
+#ANOVAS for time with whole dataset
 
-#ANOVAS for time
-
-kruskalmc(time ~ data$Participant.group,probs=0.001, data = data) #anova for time by participant group
+kruskalmc(time ~ data$Participant.group,probs=0.001, data = data) #anova for time by group
 kruskalmc(time ~ data$Participant.number,probs=0.001, data = data) #anova for time by individual participant
 
-kruskalmc(expert.time$Time.s. ~ expert.time$Participant.number,probs=0.001, data = expert.time) #ANOVA for just experts
+kruskalmc(expert.time~ expert$Participant.number,probs=0.001, data = expert) #ANOVA for just experts
 kruskalmc(novice.time$Time.s. ~ novice.time$Participant.number,probs=0.001, data = novice.time) #ANOVA for just novices
-#No differences between individuals within expert or novice groups. But expert and novice groups do differ.
 
 #ANOVAS for strikes
-data<-During.experiment.recording_fixed02.11.2014
-data<-data[-(189:190),]
-strikes<-as.numeric(as.character(data$Strikes))
+kruskalmc(strikes ~ data$Participant.group,probs=0.001, data = data) #anova for strikes by group
+kruskalmc(strikes ~ data$Participant.number,probs=0.001, data = data) #anova for time by individual participant
 
+kruskalmc(expert.time~ expert$Participant.number,probs=0.001, data = expert) #ANOVA for just experts
+kruskalmc(novice.time$Time.s. ~ novice.time$Participant.number,probs=0.001, data = novice.time) #ANOVA for just novices
+
+##GLM is a complicated output so I think we can stick with kruskalmc, but there is some glm code below to work with if we wish
 ##use glm with anova to create an analysis of variance table, test using chisq
 
 #anova for strikes between groups
@@ -41,31 +44,6 @@ plot(s.glm.within)
 summary(anova(s.glm.within))
 anova(s.glm.within)
 anova(s.glm.within, test = "Chisq")
-
-#anova for strikes in experts only
-
-expert.strike<-subset(data, Participant.group == "Expert") #subset data for experts only
-
-expert.strike$Strikes=as.numeric(as.character(expert.strike$Strikes)) #make sure strikes column is numeric
-
-s.glm.expert<-glm(expert.strike$Strikes~expert.strike$Participant.number, family=poisson, data=expert.strike)
-summary(s.glm.expert)
-plot(s.glm.expert)
-anova(s.glm.expert)
-summary(anova(s.glm.expert))
-anova(s.glm.expert, test = "Chisq")
-
-#Anova for strikes with just novice data
-novice.strike<-subset(data, Participant.group =="Novice") #subset data for novices only
-
-novice.strike$Strikes=as.numeric(as.character(novice.strike$Strikes))# make sure strikes column is numeric
-
-s.glm.novice<-glm(novice.strike$Strikes~novice.strike$Participant.number, family=poisson, data=novice.strike) #glm for novice
-summary(s.glm.novice)
-plot(s.glm.novice)
-anova(s.glm.novice)
-summary(anova(s.glm.novice))
-anova(s.glm.novice, test = "Chisq")
 
 
 
