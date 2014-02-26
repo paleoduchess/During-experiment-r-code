@@ -45,5 +45,7 @@ summary(anova(s.glm.within))
 anova(s.glm.within)
 anova(s.glm.within, test = "Chisq")
 
-
+##ANOVAs for efficiency
+kruskalmc(efficiency~group) #ANOVA by group
+kruskalmc(efficiency~participant) #ANOVA by participant
 
