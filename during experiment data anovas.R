@@ -22,6 +22,9 @@ kruskalmc(time ~ data$Participant.number,probs=0.001, data = data) #anova for ti
 
 kruskalmc(expert.time~ expert$Participant.number,probs=0.001, data = expert) #ANOVA for just experts
 kruskalmc(novice.time$Time.s. ~ novice.time$Participant.number,probs=0.001, data = novice.time) #ANOVA for just novices
+#ANOVAS for time with splits only
+kruskalmc(data.splits$Time.s. ~ data.splits$Participant.group,probs=0.001, data = data.splits) #anova for time by group
+kruskalmc(data.splits$Time.s. ~ data.splits$Participant.number,probs=0.001, data = data.splits) #anova for time by individual participant
 
 #ANOVAS for strikes
 kruskalmc(strikes ~ data$Participant.group,probs=0.001, data = data) #anova for strikes by group
@@ -29,6 +32,10 @@ kruskalmc(strikes ~ data$Participant.number,probs=0.001, data = data) #anova for
 
 kruskalmc(expert.time~ expert$Participant.number,probs=0.001, data = expert) #ANOVA for just experts
 kruskalmc(novice.time$Time.s. ~ novice.time$Participant.number,probs=0.001, data = novice.time) #ANOVA for just novices
+
+#ANOVAs for strikes with splits only
+kruskalmc(data.splits$Strikes ~ data.splits$Participant.group,probs=0.001, data = data.splits) #anova for strikes by group
+kruskalmc(data.splits$Strikes ~ data.splits$Participant.number,probs=0.001, data = data.splits) #anova for time by individual participant
 
 ##GLM is a complicated output so I think we can stick with kruskalmc, but there is some glm code below to work with if we wish
 ##use glm with anova to create an analysis of variance table, test using chisq
