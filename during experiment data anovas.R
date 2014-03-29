@@ -1,6 +1,6 @@
 #ANOVA for time
 #not a normal distribution
-
+during.experiment<-
 data<-during.experiment #whole data frame
 time<-as.numeric(as.character(data$Time.s.)) #time for whole dataset
 strikes<-as.numeric(as.character(data$Strikes)) #strikes for whole dataset

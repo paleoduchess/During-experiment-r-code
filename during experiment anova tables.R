@@ -47,3 +47,4 @@ write.table(success.strikes.among, file = "success.strikes.among.csv", sep = ","
 write.table(success.strikes.within, file = "success.strikes.within.csv", sep = ",", col.names = TRUE, qmethod = "double")
 write.table(success.time.among, file = "success.time.among.csv", sep = ",", col.names = TRUE, qmethod = "double")
 write.table(success.time.within, file = "success.time.within.csv", sep = ",", col.names = TRUE, qmethod = "double")
+
