@@ -1,4 +1,2 @@
 "statistic","signif.level","dif.com.obs.dif","dif.com.critical.dif","dif.com.difference"
-"-Expert","Multiple comparison test after Kruskal-Wallis",0.05,NA,Inf,NA
-"-Novice","Multiple comparison test after Kruskal-Wallis",0.05,NA,Inf,NA
-"Expert-Novice","Multiple comparison test after Kruskal-Wallis",0.05,62.4018796992481,15.719984607686,TRUE
+"Expert-Novice","Multiple comparison test after Kruskal-Wallis",0.001,21.5222222222222,16.7200999761357,TRUE

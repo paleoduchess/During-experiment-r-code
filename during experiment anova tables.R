@@ -12,7 +12,9 @@ outcome<-data$Split.No.split
 outcome=as.numeric(outcome)
 data$efficiency <- ((time/strikes)*(data$Prob.success.)) #creating efficiency index and attaching to data frame ##change to include probabilty of success - Time/Strikes*prob(success)# need new column that takes number of successes divided by number of cobbles for each participant
 efficiency<-data$efficiency #naming efficiency column
-
+data.splits<-subset(data, outcome==2) #subset data for only successful splits
+expert.success<-subset(data.splits, Participant.group == "Expert")
+novice.success<-subset(data.splits, Participant.group == "Novice")
 data$Participant.number<-factor(data$Participant.number)
 data$Participant.group<-factor(data$Participant.group)
 #NON PARAMETRIC ANOVA
@@ -26,12 +28,11 @@ strikes.within<-kruskalmc(strikes ~ data$Participant.number,probs=0.001, data = 
 efficiency.among<-kruskalmc(efficiency~data$Participant.group) #ANOVA by group
 efficiency.within<-kruskalmc(efficiency~data$Participant.number) #ANOVA by participant
 
-data.splits<-subset(data, outcome==2) #subset data for only successful splits
 success.efficiency.among<-kruskalmc(data.splits$efficiency~data.splits$Participant.group) #anova for successful efficiency among groups
 success.efficiency.within<-kruskalmc(data.splits$efficiency~data.splits$Participant.number) #anova for successful efficienct within groups
-success.strikes.among<-kruskalmc(data.splits$Strikes~data.splits$Participant.group) #anova for successful strikes among groups
-success.strikes.within<-kruskalmc(data.splits$Strikes~data.splits$Participant.number) #anova for successful strikes within groups
-success.time.among<-kruskalmc(data.splits$Time.s.~data.splits$Participant.group) #anova for successful times among groups
+success.strikes.among<-kruskalmc(data.splits$Strikes~data.splits$Participant.group, probs=0.001, data = data.splits) #anova for successful strikes among groups
+success.strikes.within<-kruskalmc(data.splits$Strikes~data.splits$Participant.numbe, probs=0.001, data = data.splits) #anova for successful strikes within groups
+success.time.among<-kruskalmc(data.splits$Time.s.~data.splits$Participant.group, probs=0.001) #anova for successful times among groups
 success.time.within<-kruskalmc(data.splits$Time.s.~data.splits$Participant.number) #anova for successful times within groups
 
 #SUMMARY TABLES
@@ -48,3 +49,11 @@ write.table(success.strikes.within, file = "success.strikes.within.csv", sep = "
 write.table(success.time.among, file = "success.time.among.csv", sep = ",", col.names = TRUE, qmethod = "double")
 write.table(success.time.within, file = "success.time.within.csv", sep = ",", col.names = TRUE, qmethod = "double")
 
+#success only stats
+
+expert.success<-subset(data.splits, Participant.group=="Expert") #numeric time data for experts only
+novice.success<-subset(data.splits, Participant.group=="Novice")
+expert.time.success<-expert.success$Time.s.
+expert.strikes.success<-expert.success$Strikes
+novice.time.success<-novice.success$Time.s.
+novice.strikes.success<-novice.success$Strikes
